@@ -15,7 +15,7 @@ def register():
     teammate2 = request.form['teammate2']
 
     if '' in [team_name,captain,teammate1,teammate2]:
-        return render_template("home.html", error="Пожалуйста заполните все поля!")
+        return render_template("home.html", error="Пожалуйста, заполните все поля!")
 
     db.insert_user(team_name, captain, teammate1, teammate2)
 

@@ -1,43 +1,48 @@
-import psycopg2
+import sqlite3
 
-DB_HOST = 'localhost'
-DB_NAME = 'registration'
-DB_USER = 'user'
-DB_PASSWORD = 'password'
+DB_NAME = "db"
+
+def __init__():
+    conn = db_connect()
+    conn.cursor().execute("""CREATE TABLE IF NOT EXISTS teams(
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    team_name VARCHAR(30),
+    captain TEXT,
+    teammate1 TEXT,
+    teammate2 TEXT
+);""")
+
+
+def db_connect()->sqlite3.Connection:
+    try:
+        conn = sqlite3.connect(
+                f"./db/{DB_NAME}.db"
+            )
+        return conn
+    except sqlite3.OperationalError as e:
+        print(f"Ошибка подключения к базе данных: {e}")
+        raise
 
 def insert_user(team_name, captain, teammate1, teammate2):
-    try:
-        conn = psycopg2.connect(
-            host=DB_HOST,
-            database=DB_NAME,
-            user=DB_USER,
-            password=DB_PASSWORD
-        )
+        conn = db_connect()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO teams (team_name, captain, teammate1, teammate2) VALUES (%s,%s, %s, %s)",
-                        (team_name, captain, teammate1, teammate2))
+        cursor.execute("INSERT INTO teams (team_name, captain, teammate1, teammate2) VALUES (?,?, ?, ?)",
+                        [team_name, captain, teammate1, teammate2])
         conn.commit()
         cursor.close()
         conn.close()
-    except psycopg2.OperationalError as e:
-        print(f"Ошибка подключения к базе данных: {e}")
-        raise
+    
 
 def get_teams():
-    try:
-        conn = psycopg2.connect(
-            host=DB_HOST,
-            database=DB_NAME,
-            user=DB_USER,
-            password=DB_PASSWORD
-        )
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM teams")
-        teams = cursor.fetchall()
-        cursor.close()
-        conn.close()
-        return teams
-    except psycopg2.OperationalError as e:
-        print(f"Ошибка подключения к базе данных: {e}")
-        raise
+    conn = db_connect()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM teams")
+    teams = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return teams
+
+
+
+__init__()
 

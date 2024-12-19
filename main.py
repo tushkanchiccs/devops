@@ -14,13 +14,16 @@ def register():
     teammate1 = request.form['teammate1']
     teammate2 = request.form['teammate2']
 
+    if '' in [team_name,captain,teammate1,teammate2]:
+        return render_template("home.html", error="Пожалуйста заполните все поля!")
+
     db.insert_user(team_name, captain, teammate1, teammate2)
 
     return redirect(url_for('teams'))
 
 @app.route('/teams')
 def teams():
-    teams = db.get_teams()
+    teams = db.get_teams_names()
     return render_template('teams.html', teams=teams)
 
 if __name__ == '__main__':

@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Список пользователей</title>
+    <link href="teams.css">
+    <title>Список команд</title>
 </head>
 <body>
-    <h1>Список пользователей</h1>
+    <h1>Список команд</h1>
     <ul>
     {% for team in teams %}
-        <li>{{ team.team_name }}</li>
+        <li class="team">{{team}}</li>
     {% endfor %}
     </ul>
 </body>
 </html>
+

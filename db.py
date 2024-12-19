@@ -42,6 +42,18 @@ def get_teams():
     conn.close()
     return teams
 
+def get_teams_names():
+    conn = db_connect()
+    cursor = conn.cursor()
+    cursor.execute("SELECT team_name FROM teams")
+    result = cursor.fetchall()
+    teams=[]
+    for team in result:
+         teams.append(team[0])
+    cursor.close()
+    conn.close()
+    return teams
+
 
 
 __init__()

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link href="home.css">
     <title>Регистрация</title>
 </head>
 <body>
@@ -20,5 +21,8 @@
         <br>
         <input type="submit" value="Зарегистрироваться">
     </form>
+    {% if error %}
+        <h3>{{error}}</h3>
+    {% endif %}
 </body>
 </html>
